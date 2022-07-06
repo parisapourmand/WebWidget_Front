@@ -805,7 +805,7 @@ export class ConversationComponent implements OnInit, AfterViewInit, OnChanges {
     subscribtionKey = 'conversationTyping';
     subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
     if (!subscribtion) {
-      subscribtion =  this.typingService.BSIsTyping.subscribe((data: any) => {
+      subscribtion =  this.typingService.BSIsTyping.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any) => {
         this.logger.debug('[CONV-COMP] ***** BSIsTyping *****', data);
         if (data) {
           const isTypingUid = data.uid; //support-group-...
@@ -1101,10 +1101,12 @@ export class ConversationComponent implements OnInit, AfterViewInit, OnChanges {
     this.unsubscribe$.complete();
     this.chatManager.conversationsHandlerService.conversationRemoved.next(null)
     this.conversationHandlerService.messageWait.next(null)
+    this.typingService.BSIsTyping.next(null)
+
 
     // TODO-GAB: da verificare se eliminarlo
     this.subscriptions.forEach(function (subscription) {
-        subscription.value.unsubscribe();
+      subscription.value.unsubscribe();
     });
     this.subscriptions = [];
     this.subscriptions.length = 0;

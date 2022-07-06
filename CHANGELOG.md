@@ -1,5 +1,10 @@
 # chat21-web-widget ver 5.0
 
+### 5.0.27 in PROD
+- bug-fixed: typing is active if leave and open the same conversations
+- bug-fixed: reading null of undefined in home conversation while add animation
+- bug-fixed: ipAddress not shown in attributes for Firefox and Safari
+
 ### 5.0.26 in PROD 
 - bug-fixed: BSStateUpload is undefined while subscribe to native-upload service
 
