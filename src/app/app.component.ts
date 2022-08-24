@@ -1831,7 +1831,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onImageLoaded(conversation: ConversationModel) {
         this.logger.debug('[APP-COMP] onLoadImage convvvv:::', conversation)
-        conversation.image = this.imageRepoService.getImagePhotoUrl(conversation.sender)
+        let url = this.imageRepoService.getImagePhotoUrl(conversation.sender)
+        this.imageRepoService.checkImageExists(conversation.sender,  (existImage)=> {
+          existImage? conversation.image = url : null;
+        })
+        // conversation.image = this.imageRepoService.getImagePhotoUrl(conversation.sender)
     }
 
     onConversationLoaded(conversation: ConversationModel) {

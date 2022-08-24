@@ -1768,7 +1768,7 @@ export class GlobalSettingsService {
             // this.globals.setParameter('areAgentsAvailableText', this.globals.AGENT_AVAILABLE);
             const arrayAgents = [];
             availableAgents.forEach((element, index: number) => {
-                element.imageurl = getImageUrlThumb(element.id);
+                // element.imageurl = getImageUrlThumb(element.id);
                 arrayAgents.push(element);
                 if (index >= 4) { return; }
                 // this.logger.debug('[GLOBAL-SET] setAvailableAgentsStatus > index, ' - element->', element);

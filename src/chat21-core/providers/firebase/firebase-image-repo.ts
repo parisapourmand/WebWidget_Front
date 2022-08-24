@@ -40,13 +40,22 @@ export class FirebaseImageRepoService extends ImageRepoService {
     }
 
 
-    checkImageExists(url: string, callback: (exist: boolean) => void): void {
-        console.log('urllll', url)
-        this.http.get(url, { responseType: 'blob' }).subscribe( res => {
-            callback(true)
-        },(error) => {
-            console.log('ressssssss errorr', error);
+    checkImageExists(uid: string, callback: (exist: boolean) => void): void {   
+        let sender_id = '';
+        if (uid && uid.includes('bot_')) {
+            sender_id = uid.slice(4)
+        } else {
+            sender_id = uid
+        }   
+        firebase.storage().ref('profiles/'+ sender_id).list().then((res)=> {
+            if(res.items.length > 0){
+                callback(true)
+            }else{
+                callback(false)
+            }
+        }).catch(e=> {
             callback(false)
+            console.log('fileeeeeee getMetadata errorrr-> ', e)
         })
     }
 }

@@ -21,12 +21,8 @@ export class AvatarComponent implements OnInit {
         this.url =  this.baseLocation +'/assets/images/light_avatar_placeholder.svg'
       }
       let url = this.imageRepoService.getImagePhotoUrl(this.senderID)
-      // this.imageRepoService.checkImageExists(url,  (existImage)=> {
-      //   existImage? this.url = url: null;
-      //   console.log('existttttt', existImage)
-      // })
-      this.checkImageExists(url, (existImage)=> {
-        existImage? this.url = url: null; 
+      this.imageRepoService.checkImageExists(this.senderID,  (existImage)=> {
+        existImage? this.url = url: null;
       })
     }
     
@@ -45,18 +41,6 @@ export class AvatarComponent implements OnInit {
 
   onLoadedHuman(event){
     // console.log('LOADED Bot human image...')
-  }
-
-
-  checkImageExists(imageUrl, callBack) {
-    var imageData = new Image();
-    imageData.onload = function () {
-      callBack(true);
-    };
-    imageData.onerror = function () {
-      callBack(false);
-    };
-    imageData.src = imageUrl;
   }
 
 }

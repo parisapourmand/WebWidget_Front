@@ -162,7 +162,11 @@ export class HomeConversationsComponent implements OnInit, OnDestroy {
     this.waitingTime = -1;
     this.availableAgents = this.g.availableAgents.slice(0, 5)
     this.availableAgents.forEach(agent => {
-      agent.imageurl = this.imageRepoService.getImagePhotoUrl(agent.id)
+      let url = this.imageRepoService.getImagePhotoUrl(agent.id)
+      this.imageRepoService.checkImageExists(agent.id,  (existImage)=> {
+        existImage? agent.imageurl = url : null;
+      })
+      // agent.imageurl = this.imageRepoService.getImagePhotoUrl(agent.id)
     })
 
     //this.logger.debug('senderId: ', this.senderId]);
