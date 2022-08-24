@@ -36,16 +36,42 @@ export class TiledeskRequestsService {
       'Content-Type': 'application/json',
       Authorization: this.tiledeskToken,
     });
-    const requestOptions = { headers: headers };
+    const httpOptions = {
+      headers: new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': this.tiledeskToken,
+      })
+  }
+    // const requestOptions = { headers: headers };
     const that = this;
     const url = this.URL_TILEDESK_CLOSE_REQUEST + supportgroupid + '/closeg'
     return new Promise((resolve, reject) => {
-      this.logger.debug('[TILEDESK-REQUEST-SERV] - closeSupportGroup URLLLL', url, requestOptions);
-      this.http.put(url, null, requestOptions).subscribe((data) => {
+      this.logger.debug('[TILEDESK-REQUEST-SERV] - closeSupportGroup URLLLL', url, httpOptions);
+      this.http.put(url, null, httpOptions).subscribe((data) => {
         this.logger.debug('[TILEDESK-REQUEST-SERV] - closeSupportGroup response', data);
         resolve('closed')
       }, (error) => {
         reject(error)
+      });
+    });
+  }
+
+
+  checkIfImageExist(urlToCheck: string): Promise<boolean> {
+    const postData = { url: urlToCheck };
+    const url ="https://firebasecheckifimageexist.gabrielepanico.repl.co/checkIfExist"
+    return new Promise((resolve, reject) => {
+      this.logger.debug('[TILEDESK-REQUEST-SERV] - checkIfImageExist URLLLL', url);
+      this.http.post(url, postData).subscribe((data) => {
+        this.logger.debug('[TILEDESK-REQUEST-SERV] - checkIfImageExist response', data);
+        if(data && data['success']){
+          resolve(true)
+        }else{
+          resolve(false)
+        }
+      }, (error) => {
+        reject(false)
       });
     });
   }
