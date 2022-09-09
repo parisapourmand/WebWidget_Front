@@ -834,7 +834,7 @@ class Chat21Client {
         console.log('ulrrrrrrr', URL)
         xmlhttp.setRequestHeader("authorization", this.jwt);
         xmlhttp.onreadystatechange = function() {
-            console.log("onreadystatechange messages!")
+            // console.log("onreadystatechange messages!")
             if (callback && xmlhttp.readyState == 4 && xmlhttp.status == 200 && xmlhttp.responseText) {
                 // console.log("xmlhttp...", xmlhttp.responseText)
                 try {
