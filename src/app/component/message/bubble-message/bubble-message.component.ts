@@ -116,7 +116,7 @@ export class BubbleMessageComponent implements OnInit {
  handleTooltipEvents(event) {
   const that = this;
   const showDelay = this.tooltipOptions['showDelay'];
-  setTimeout(function () {
+  const timeout = setTimeout(function () {
     try {
       const domRepresentation = document.getElementsByClassName('chat-tooltip');
       if (domRepresentation) {
@@ -134,6 +134,7 @@ export class BubbleMessageComponent implements OnInit {
         that.logger.error('[BUBBLE-MESSAGE] handleTooltipEvents >>>> Error :' + err);
     }
   }, showDelay);
+  clearTimeout(timeout)
 }
 
   // ========= begin:: event emitter function ============//
