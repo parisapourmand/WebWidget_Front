@@ -97,7 +97,7 @@
                           <div role="messaggio" *ngIf="messageType(MESSAGE_TYPE_OTHERS, message)" class="msg_container base_receive">
                             
                             <chat-avatar-image *ngIf="!isSameSender(message?.sender, i)" 
-                              [ngClass]="{'slide-in-left': !isFirstMessage(message?.sender, i)}"    
+                              [ngClass]="{'slide-in-left': false}"    
                               [senderID]="message?.sender"
                               [senderFullname]="message?.sender_fullname"
                               [baseLocation]="baseLocation">
@@ -105,7 +105,7 @@
 
                             <!--backgroundColor non viene ancora usato -->
                             <chat-bubble-message class="messages msg_receive"
-                              [ngClass]="{'slide-in-left': !isFirstMessage(message?.sender, i)}"  
+                              [ngClass]="{'slide-in-left': false}"  
                               [class.emoticon]="isEmojii(message?.text)"
                               [style.margin-left]="isSameSender(message?.sender, i)? '50px': null"
                               [ngStyle]="{'background': stylesMap.get('bubbleReceivedBackground'), 'color': stylesMap.get('bubbleReceivedTextColor')}"
@@ -180,7 +180,7 @@
     
     
                           <!-- message type:: button &&  -->
-                          <div *ngIf="message?.attributes && message?.attributes?.attachment " [ngClass]="{'slide-in-left': !isFirstMessage(message?.sender, i)}" > 
+                          <div *ngIf="message?.attributes && message?.attributes?.attachment " [ngClass]="{'slide-in-left': false}" > 
                               <chat-message-attachment 
                                   style="height: 100%; display: block;"
                                   [message]="message"
