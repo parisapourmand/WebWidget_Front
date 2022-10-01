@@ -1,5 +1,8 @@
 # chat21-web-widget ver 5.0
 
+### 5.0.38.1
+- removed: animation of incoming messages
+
 ### 5.0.38 in PROD
 
 ### 5.0.38-rc.2
