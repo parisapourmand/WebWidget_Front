@@ -10,6 +10,7 @@ import { LoggerService } from 'src/chat21-core/providers/abstract/logger.service
 import { LoggerInstance } from 'src/chat21-core/providers/logger/loggerInstance';
 import { ChatManager } from 'src/chat21-core/providers/chat-manager';
 import { MessageModel } from 'src/chat21-core/models/message';
+declare const window: any;
 
 @Component({
   selector: 'chat-conversation-footer',
@@ -38,6 +39,8 @@ export class ConversationFooterComponent implements OnInit, OnChanges {
   @Input() stylesMap: Map<string, string>
   @Input() translationMap: Map< string, string>;
   @Input() dropEvent: Event;
+  @Input() isRecording: boolean;
+  @Input() recognition: any;
   @Output() onEmojiiPickerShow = new EventEmitter<boolean>();
   @Output() onBeforeMessageSent = new EventEmitter();
   @Output() onAfterSendMessage = new EventEmitter<MessageModel>();
@@ -417,6 +420,99 @@ export class ConversationFooterComponent implements OnInit, OnChanges {
     this.resizeInputField()
     this.setWritingMessages(this.textInputTextArea)
   }
+
+  toggleRecording(event) {
+    var SpeechRecognition = SpeechRecognition || window.webkitSpeechRecognition
+
+    if (this.isRecording) {
+      this.isRecording = false;
+      window.recognition.stop();
+    } else {
+      this.isRecording = true;
+      window.recognition = new SpeechRecognition();
+      window.recognition.lang = "fa-IR"
+      window.recognition.start();
+      var that = this;
+      window.recognition.onresult = function(event) {
+        var transcript = event.results[0][0].transcript;
+        that.sendMessage(transcript, TYPE_MSG_TEXT);
+      };
+      }
+  }
+
+
+  // startRecording(event) {
+  //   this.isRecording = true;
+
+  //   window.chunks = [];
+  //   let that = this;
+  //   navigator.mediaDevices.getUserMedia({ audio: true })
+  //     .then((stream) => {
+  //       window.mediaRecorder = new MediaRecorder(stream);
+  //       window.mediaRecorder.start();
+  //       window.mediaRecorder.ondataavailable = (e) => {
+  //         window.chunks.push(e.data);
+  //         const blob = new Blob(window.chunks, { type: "audio/ogg; codecs=opus" });
+  //         console.log("blob: ", blob);
+
+  //         var fileReader = new FileReader();
+  //         fileReader.onload = function() {
+  //             fileReader.readAsArrayBuffer(blob);
+  //             console.debug("bit rate : ",window.mediaRecorder.audioBitsPerSecond)
+  //             let bitString = fileReader.result.toString()
+  //             console.debug(bitString)
+
+  //             window.gapi.client.setApiKey("");
+  //             // Load the speech client library and present the demo UI
+  //             window.gapi.client.load('speech', 'v1beta1', function () {
+  //               document.getElementById('post-load-div').style.display = 'block';
+  //               that.sendBytesToSpeech(btoa(bitString), 'OGG_OPUS', window.mediaRecorder.audioBitsPerSecond, that.sendSpeechToTextMessage)
+  //             });
+              
+  //         };
+
+  //       };
+  //     }).catch((err) => {
+  //       console.error(`مشکل در شناخت میکروفون: ${err}`);
+  //     });
+  // }
+
+  // sendSpeechToTextMessage(msg: string){
+  //   console.log("msg: ", msg)
+  //   this.sendMessage(msg, TYPE_MSG_TEXT)
+  // }
+
+
+  // stopRecording(event) {
+  //   this.isRecording = false;
+  //   window.mediaRecorder.stop();
+  // }
+
+
+  // initGapi () {
+  //   console.log('loading gapi');
+  //   window.gapi.client.setApiKey();
+
+  //   // Load the speech client library and present the demo UI
+  //   window.gapi.client.load('speech', 'v1beta1', function () {
+  //     document.getElementById('post-load-div').style.display = 'block';
+  //   });
+  // }
+
+
+  // sendBytesToSpeech (bytes, encoding, rate, callback) {
+  //   window.gapi.client.speech.speech.syncrecognize({
+  //     config: {
+  //       encoding: encoding,
+  //       sampleRate: rate
+  //     },
+  //     audio: {
+  //       content: bytes
+  //     }
+  //   }).execute(function (r) {
+  //     callback(r);
+  //   });
+  // }
 
   onSendPressed(event) {
     this.logger.debug('[CONV-FOOTER] onSendPressed:event', event);
