@@ -440,6 +440,14 @@ export class ConversationFooterComponent implements OnInit, OnChanges {
       }
   }
 
+  // toggleRecording using other services
+  // toggleRecording(event) {
+  //   if (this.isRecording) {
+  //     this.stopRecording(event)
+  //   } else {
+  //     this.startRecording(event)
+  //     }
+  // }
 
   // startRecording(event) {
   //   this.isRecording = true;
